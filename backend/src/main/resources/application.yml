@@ -1,5 +1,5 @@
 server:
-  port: ${SERVER_PORT:8080}
+  port: ${PORT:${SERVER_PORT:8080}}
   error:
     include-message: always
     include-binding-errors: always
@@ -11,9 +11,9 @@ spring:
     active: ${SPRING_PROFILES_ACTIVE:local}
 
   datasource:
-    url: jdbc:mysql://${DB_HOST:127.0.0.1}:${DB_PORT:3306}/${DB_NAME:smart_campus_db}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&characterEncoding=UTF-8
-    username: ${DB_USERNAME:campus_app_user}
-    password: ${DB_PASSWORD:Campus@Secure2026!}
+    url: ${SPRING_DATASOURCE_URL:${MYSQL_URL:${DATABASE_URL:jdbc:mysql://${DB_HOST:127.0.0.1}:${DB_PORT:3306}/${DB_NAME:smart_campus_db}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&characterEncoding=UTF-8}}}
+    username: ${DB_USERNAME:${SPRING_DATASOURCE_USERNAME:${MYSQLUSER:campus_app_user}}}
+    password: ${DB_PASSWORD:${SPRING_DATASOURCE_PASSWORD:${MYSQLPASSWORD:Campus@Secure2026!}}}
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       maximum-pool-size: 10
@@ -37,6 +37,7 @@ spring:
     baseline-version: 0
     locations: classpath:db/migration
     validate-on-migrate: true
+    repair-on-migrate: true
 
   servlet:
     multipart:

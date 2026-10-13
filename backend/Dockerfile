@@ -7,6 +7,7 @@ WORKDIR /build
 
 # Copy Maven Wrapper and POM first to leverage Docker layer caching
 COPY mvnw mvnw.cmd pom.xml ./
+RUN chmod +x mvnw
 
 # Pre-fetch dependencies
 RUN ./mvnw dependency:go-offline -B || true

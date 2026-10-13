@@ -41,7 +41,7 @@ public class AdminUserController {
         return ResponseEntity.status(201).body(ApiResponse.success("User created successfully", created));
     }
 
-    @PatchMapping("/users/{id}/status")
+    @PatchMapping({"/users/{id}", "/users/{id}/status"})
     @Operation(summary = "Update user status (ACTIVE, INACTIVE, SUSPENDED)")
     public ResponseEntity<ApiResponse<UserDto>> updateUserStatus(@PathVariable Long id, @RequestParam UserStatus status) {
         Long adminId = SecurityUtils.getCurrentUserId();

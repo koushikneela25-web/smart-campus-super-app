@@ -89,6 +89,35 @@ public class EventService {
     }
 
     @Transactional
+    public EventDto updateEvent(Long eventId, Long userId, CreateEventRequest request) {
+        if (!request.getStartTime().isBefore(request.getEndTime())) {
+            throw new BadRequestException("Event start time must be before end time");
+        }
+
+        CampusEvent event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new ResourceNotFoundException("Event not found with id: " + eventId));
+
+        event.setTitle(request.getTitle().trim());
+        event.setDescription(request.getDescription().trim());
+        event.setCategory(request.getCategory());
+        event.setVenue(request.getVenue().trim());
+        event.setStartTime(request.getStartTime());
+        event.setEndTime(request.getEndTime());
+        if (request.getMaxCapacity() != null) {
+            event.setMaxCapacity(request.getMaxCapacity());
+        }
+        if (request.getImageUrl() != null) {
+            event.setImageUrl(request.getImageUrl());
+        }
+
+        CampusEvent saved = eventRepository.save(event);
+        auditService.log("EVENT_UPDATE", "CampusEvent", saved.getId().toString(), userId,
+                "Updated campus event: " + saved.getTitle(), "127.0.0.1");
+
+        return new EventDto(saved);
+    }
+
+    @Transactional
     public void rsvpEvent(Long eventId, Long userId) {
         CampusEvent event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new ResourceNotFoundException("Event not found with id: " + eventId));

@@ -1,0 +1,34 @@
+# ===================================================================
+# Render Blueprint Specification for Smart Campus Super App Backend
+# Service Type: Web Service
+# Runtime: Docker
+# ===================================================================
+services:
+  - type: web
+    name: smart-campus-backend
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    plan: free
+    region: oregon
+    branch: main
+    healthCheckPath: /actuator/health
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: DB_HOST
+        sync: false
+      - key: DB_PORT
+        value: 3306
+      - key: DB_NAME
+        value: smart_campus_db
+      - key: DB_USERNAME
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: APP_CORS_ALLOWED_ORIGINS
+        value: "http://localhost:5173,https://smart-campus-super-app.vercel.app,https://*.vercel.app"

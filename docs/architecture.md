@@ -1,7 +1,7 @@
 # Smart Campus Super App — Software Architecture Document
 
 ## 1. Executive Architecture Summary
-The **Smart Campus Super App** is an enterprise-grade full-stack collegiate management system developed for modern higher education institutions. The platform is architected with a strict separation of concerns, decoupling a **React 18 + TypeScript SPA** deployed on **Vercel** from a high-performance **Java 21 + Spring Boot 3.3.4 REST API** running in containerized environments (e.g., **Railway**), backed exclusively by a locally hosted **MySQL 8.x** relational database via an encrypted tunneling layer.
+The **Smart Campus Super App** is an enterprise-grade full-stack collegiate management system developed for modern higher education institutions. The platform is architected with a strict separation of concerns, decoupling a **React 18 + TypeScript SPA** deployed on **Vercel** from a high-performance **Java 21 + Spring Boot 3.3.4 REST API** running as a containerized **Render Web Service**, backed exclusively by a locally hosted **MySQL 8.x** relational database via an encrypted tunneling layer.
 
 ---
 
@@ -19,7 +19,7 @@ graph TD
         D[Vercel Global CDN & SPA Rewrites]
     end
 
-    subgraph Application Tier [Backend - Railway / Spring Boot]
+    subgraph Application Tier [Backend - Render Web Service / Spring Boot]
         E[Spring Security Filter Chain]
         F[JWT Authentication & RBAC Interceptors]
         G[REST API Controllers]

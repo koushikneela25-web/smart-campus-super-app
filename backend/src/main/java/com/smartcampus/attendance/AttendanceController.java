@@ -62,9 +62,11 @@ public class AttendanceController {
         return ResponseEntity.ok(ApiResponse.success("Session closed", attendanceService.closeSession(id, currentUserId)));
     }
 
-    @PostMapping("/check-in")
+    @PostMapping({"/check-in", "/sessions/{id}/check-in"})
     @Operation(summary = "Submit attendance check-in using scanned QR token and optional GPS location")
-    public ResponseEntity<ApiResponse<RecordDto>> checkIn(@Valid @RequestBody CheckInRequest request) {
+    public ResponseEntity<ApiResponse<RecordDto>> checkIn(
+            @PathVariable(required = false) Long id,
+            @Valid @RequestBody CheckInRequest request) {
         Long currentUserId = SecurityUtils.getCurrentUserId();
         RecordDto record = attendanceService.submitCheckIn(currentUserId, request);
         return ResponseEntity.ok(ApiResponse.success("Attendance verified successfully! Marked PRESENT.", record));
@@ -82,6 +84,13 @@ public class AttendanceController {
     public ResponseEntity<ApiResponse<AttendanceSummaryDto>> getMySummary() {
         Long currentUserId = SecurityUtils.getCurrentUserId();
         return ResponseEntity.ok(ApiResponse.success(attendanceService.getStudentSummary(currentUserId)));
+    }
+
+    @GetMapping("/reports")
+    @PreAuthorize("hasAnyRole('FACULTY', 'ADMIN')")
+    @Operation(summary = "List attendance records for reporting")
+    public ResponseEntity<ApiResponse<List<RecordDto>>> getReports(@RequestParam(required = false) Long sessionId) {
+        return ResponseEntity.ok(ApiResponse.success(attendanceService.getReports(sessionId)));
     }
 
     @GetMapping("/reports/export-csv")

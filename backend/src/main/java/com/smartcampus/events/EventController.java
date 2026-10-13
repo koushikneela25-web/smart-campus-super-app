@@ -57,6 +57,17 @@ public class EventController {
         return ResponseEntity.status(201).body(ApiResponse.success("Event created successfully", created));
     }
 
+    @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('FACULTY', 'ADMIN')")
+    @Operation(summary = "Update an existing campus event (Faculty/Admin only)")
+    public ResponseEntity<ApiResponse<EventDto>> updateEvent(
+            @PathVariable Long id,
+            @Valid @RequestBody CreateEventRequest request) {
+        Long currentUserId = SecurityUtils.getCurrentUserId();
+        EventDto updated = eventService.updateEvent(id, currentUserId, request);
+        return ResponseEntity.ok(ApiResponse.success("Event updated successfully", updated));
+    }
+
     @PostMapping("/{id}/rsvp")
     @Operation(summary = "Register (RSVP) for an event with capacity validation")
     public ResponseEntity<ApiResponse<Void>> rsvpEvent(@PathVariable Long id) {

@@ -240,6 +240,13 @@ public class AttendanceService {
         return new AttendanceSummaryDto(totalRecords, presentRecords, absentRecords, Math.round(overallPct * 10.0) / 10.0, subjectSummaries);
     }
 
+    public List<RecordDto> getReports(Long sessionId) {
+        List<AttendanceRecord> records = (sessionId != null)
+                ? recordRepository.findBySessionId(sessionId)
+                : recordRepository.findAll();
+        return records.stream().map(RecordDto::new).collect(Collectors.toList());
+    }
+
     public String generateCsvReport(Long sessionId) {
         List<AttendanceRecord> records = (sessionId != null)
                 ? recordRepository.findBySessionId(sessionId)

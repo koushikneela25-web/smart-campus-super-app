@@ -34,11 +34,11 @@ COPY --from=builder --chown=campus:campus /build/target/*.jar /app/smart-campus-
 
 USER campus
 
-# Expose HTTP port (Railway dynamically maps PORT env variable)
+# Expose HTTP port (Render dynamically provides PORT env variable, defaulting to 8080)
 ENV PORT=8080
 EXPOSE 8080
 
 # Configure JVM options for container environments
 ENV JAVA_OPTS="-XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0 -Djava.security.egd=file:/dev/./urandom"
 
-ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar /app/smart-campus-backend.jar --server.port=${PORT:-8080}"]
+ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar /app/smart-campus-backend.jar --server.port=${PORT:-8080} --server.address=0.0.0.0"]

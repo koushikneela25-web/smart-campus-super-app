@@ -4,9 +4,9 @@
 The **Smart Campus Super App** provides a RESTful API versioned under `/api/v1`. All endpoints accept and produce `application/json` (unless designated for file downloads like CSV export).
 
 - **Base URL (Local)**: `http://localhost:8080/api/v1`
-- **Base URL (Production)**: `https://<your-railway-app>.up.railway.app/api/v1`
-- **Interactive Swagger UI**: Available at `http://localhost:8080/swagger-ui/index.html` (or production equivalent)
-- **OpenAPI JSON Spec**: Available at `http://localhost:8080/v3/api-docs`
+- **Base URL (Production)**: `https://smart-campus-backend.onrender.com/api/v1`
+- **Interactive Swagger UI**: Available at `http://localhost:8080/swagger-ui.html` (or `https://smart-campus-backend.onrender.com/swagger-ui.html`)
+- **OpenAPI JSON Spec**: Available at `http://localhost:8080/api-docs`
 
 ---
 
